@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/rockstar/Documents/Rock/debugs/osgSonartest/test/suite.cpp
+boost/test/included/unit_test.hpp
+-
+
+/home/rockstar/Documents/Rock/debugs/osgSonartest/test/test_Dummy.cpp
+boost/test/unit_test.hpp
+-
+osgSonartest/Dummy.hpp
+-
+
+include/osgSonartest/Dummy.hpp
+iostream
+-
+

@@ -1,0 +1,4 @@
+/home/rockstar/Documents/Rock/install/lib/pkgconfig/osgSonartest.pc
+/home/rockstar/Documents/Rock/install/lib/libosgSonartest.so
+/home/rockstar/Documents/Rock/install/include/osgSonartest/Dummy.hpp
+/home/rockstar/Documents/Rock/install/bin/osgSonartest_bin

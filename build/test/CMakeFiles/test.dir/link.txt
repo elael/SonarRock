@@ -1,0 +1,1 @@
+/usr/bin/c++   -g    CMakeFiles/test.dir/suite.cpp.o CMakeFiles/test.dir/test_Dummy.cpp.o  -o test -rdynamic ../src/libosgSonartest.so -lboost_unit_test_framework-mt -Wl,-rpath,/home/rockstar/Documents/Rock/debugs/osgSonartest/build/src 

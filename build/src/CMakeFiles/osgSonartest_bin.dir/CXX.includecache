@@ -1,0 +1,42 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/rockstar/Documents/Rock/debugs/osgSonartest/src/Main.cpp
+iostream
+-
+osgDB/ReadFile
+-
+osgViewer/Viewer
+-
+osg/Geode
+-
+osg/Shape
+-
+osg/Material
+-
+osg/Texture2D
+-
+osg/Geometry
+-
+osg/ref_ptr
+-
+osg/ShapeDrawable
+-
+osg/Plane
+-
+osg/CullSettings
+-
+osg/PositionAttitudeTransform
+-
+osgDB/WriteFile
+-
+unistd.h
+-
+math.h
+-
+

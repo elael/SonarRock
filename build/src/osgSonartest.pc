@@ -1,0 +1,12 @@
+prefix=/home/rockstar/Documents/Rock/install
+exec_prefix=/home/rockstar/Documents/Rock/install
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: osgSonartest
+Description: 
+Version: 0.1
+Requires: 
+Libs: -L${libdir} -losgSonartest
+Cflags: -I${includedir}
+

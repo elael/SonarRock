@@ -1,0 +1,3 @@
+/home/rockstar/Documents/Rock/debugs/osgSonartest/build/src/CMakeFiles/osgSonartest.dir
+/home/rockstar/Documents/Rock/debugs/osgSonartest/build/src/CMakeFiles/osgSonartest_bin.dir
+/home/rockstar/Documents/Rock/debugs/osgSonartest/build/test/CMakeFiles/test.dir

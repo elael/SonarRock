@@ -1,0 +1,1 @@
+/usr/bin/c++  -fPIC -g   -shared -Wl,-soname,libosgSonartest.so -o libosgSonartest.so CMakeFiles/osgSonartest.dir/Dummy.cpp.o -Wl,-rpath,::::::::::::::::::::::::::::::::::::::::: 
