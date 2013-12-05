@@ -107,9 +107,6 @@ int main(int argc, char** argv)
 	//boxDrawable = new osg::ShapeDrawable(osg::InfinitePlane(osg::Plane(0,0,1,0)));
 	//root->addChild((geode[3] = new osg::Geode())->addDrawable(new osg::ShapeDrawable(osg::Plane(0,0,1,0))));
 	
-	//Set up camera
-
-	osg::ref_ptr<osg::Camera> osgCam = new osg::Camera;
 
 
 
@@ -117,54 +114,59 @@ int main(int argc, char** argv)
 
 
 
-		// Simulation Loop
+        // Simulation variables
 
 	int beamRadius = 700;
-	float nearplane = 0.2;
-	float farplane = 400;
+	float nearplane = 30;
+	float farplane = 200;
 
 	osgViewer::Viewer viewer;
 	viewer.setSceneData( root );
 
 
+	//Set up camera
+
+	osg::ref_ptr<osg::Camera> osgCam = new osg::Camera;
+	
 	osgCam = viewer.getCamera();
 	
 	osg::ref_ptr<osg::Image> colorImage= new osg::Image;
 	osg::ref_ptr<osg::Image> zImage = new osg::Image;
 	osg::ref_ptr<osg::Image> zImageData = new osg::Image;
 
-	colorImage->allocateImage(2*720, 2*576, 1, GL_RGBA, GL_UNSIGNED_BYTE);
-	zImage->allocateImage(2*720, 2*576, 1, GL_DEPTH_COMPONENT ,GL_UNSIGNED_BYTE); 
-	zImageData->allocateImage(2*720, 2*576, 1, GL_DEPTH_COMPONENT ,GL_FLOAT); 
+	colorImage->allocateImage(720, 576, 1, GL_RGBA, GL_UNSIGNED_BYTE);
+	zImage->allocateImage(720, 576, 1, GL_DEPTH_COMPONENT ,GL_UNSIGNED_BYTE); 
+	zImageData->allocateImage(720, 576, 1, GL_DEPTH_COMPONENT ,GL_FLOAT); 
+	
+	osgCam->setViewport(new osg::Viewport(0,0,720,576)); 
+
+	
+	osgCam->setComputeNearFarMode(osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR);
+	osgCam->setReferenceFrame(osg::Camera::ABSOLUTE_RF);
+	osgCam->setProjectionMatrixAsPerspective(45.0, 1.0, nearplane, farplane); 
+	osgCam->setViewMatrixAsLookAt(osg::Vec3(0,0,30.001), osg::Vec3(0,0,0), osg::Vec3(0,1,1) );
   
+	//osgCam->setRenderTargetImplementation( osg::Camera::PIXEL_BUFFER );
 	osgCam->attach(osg::Camera::COLOR_BUFFER, colorImage);
 	osgCam->attach(osg::Camera::DEPTH_BUFFER, zImage); 
 	osgCam->attach(osg::Camera::DEPTH_BUFFER, zImageData); 
-	//osgCam->setRenderTargetImplementation( osg::Camera::PIXEL_BUFFER );
-	
-	osgCam->setViewport(new osg::Viewport(0,0,2*720,2*576)); 
 
 	
-	osgCam->setComputeNearFarMode(osg::CullSettings::COMPUTE_NEAR_FAR_USING_PRIMITIVES);
-	osgCam->setReferenceFrame(osg::Camera::ABSOLUTE_RF);
-	osgCam->setProjectionMatrixAsPerspective(45.0, 1.0, nearplane, farplane); 
-	osgCam->setViewMatrixAsLookAt(osg::Vec3(0,0,5), osg::Vec3(0,0,0), osg::Vec3(0,1,1) );
-
 	//pbuffer context begin
 
 	osg::ref_ptr<osg::GraphicsContext::Traits> traits = new
 	osg::GraphicsContext::Traits;
 	traits->x =0;
 	traits->y = 0;
-	traits->width = 2*720;
-	traits->height = 2*576; 
+	traits->width = 720;
+	traits->height = 576; 
 	traits->windowDecoration = false;
 	traits->doubleBuffer = false;
 	traits->sharedContext = 0;
-	traits->pbuffer = true;
+	traits->useMultiThreadedOpenGLEngine = false;
+	//traits->pbuffer = true;
 
-	osg::GraphicsContext* _gc=
-	osg::GraphicsContext::createGraphicsContext(traits.get());
+	osg::GraphicsContext* _gc = osg::GraphicsContext::createGraphicsContext(traits.get());
 
 	osgCam->setGraphicsContext(_gc); 
 
@@ -181,12 +183,9 @@ int main(int argc, char** argv)
 	std::cout << "z value : " << z << std::endl; 
 	//std::cout << "z value : " << (z/(pow(2.0,24)-1.0)) << std::endl; 
 
-	//float z = ((float*)zimage->data())[1];
 	float true_distance = farplane*nearplane/(farplane - z*(farplane-nearplane));
 	std::cout << "z distance value : " <<  true_distance << std::endl; 
 
-	//while(!viewer.done())viewer.frame();
-//	while(!kbhit())sleep(100);
 
 	return 0;
 }
