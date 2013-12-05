@@ -117,12 +117,14 @@ int main(int argc, char** argv)
         // Simulation variables
 
 	int beamRadius = 700;
-	float nearplane = 30;
+	float nearplane = 0.2;
 	float farplane = 200;
 
 	osgViewer::Viewer viewer;
 	viewer.setSceneData( root );
 
+	
+	
 
 	//Set up camera
 
@@ -132,24 +134,27 @@ int main(int argc, char** argv)
 	
 	osg::ref_ptr<osg::Image> colorImage= new osg::Image;
 	osg::ref_ptr<osg::Image> zImage = new osg::Image;
-	osg::ref_ptr<osg::Image> zImageData = new osg::Image;
+	//osg::ref_ptr<osg::Image> zImageData = new osg::Image;
 
 	colorImage->allocateImage(720, 576, 1, GL_RGBA, GL_UNSIGNED_BYTE);
 	zImage->allocateImage(720, 576, 1, GL_DEPTH_COMPONENT ,GL_UNSIGNED_BYTE); 
-	zImageData->allocateImage(720, 576, 1, GL_DEPTH_COMPONENT ,GL_FLOAT); 
+	//zImageData->allocateImage(720, 576, 1, GL_DEPTH_COMPONENT ,GL_FLOAT); 
 	
 	osgCam->setViewport(new osg::Viewport(0,0,720,576)); 
 
 	
+	osgCam->setClearColor(osg::Vec4(0.1f,0.1f,0.3f,1.0f));
+	osgCam->setClearMask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
+	
 	osgCam->setComputeNearFarMode(osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR);
 	osgCam->setReferenceFrame(osg::Camera::ABSOLUTE_RF);
 	osgCam->setProjectionMatrixAsPerspective(45.0, 1.0, nearplane, farplane); 
-	osgCam->setViewMatrixAsLookAt(osg::Vec3(0,0,30.001), osg::Vec3(0,0,0), osg::Vec3(0,1,1) );
+	osgCam->setViewMatrixAsLookAt(osg::Vec3(0,0,5), osg::Vec3(0,0,0), osg::Vec3(0,1,0) );
   
 	//osgCam->setRenderTargetImplementation( osg::Camera::PIXEL_BUFFER );
 	osgCam->attach(osg::Camera::COLOR_BUFFER, colorImage);
 	osgCam->attach(osg::Camera::DEPTH_BUFFER, zImage); 
-	osgCam->attach(osg::Camera::DEPTH_BUFFER, zImageData); 
+// 	osgCam->attach(osg::Camera::DEPTH_BUFFER, zImageData); 
 
 	
 	//pbuffer context begin
@@ -168,7 +173,7 @@ int main(int argc, char** argv)
 
 	osg::GraphicsContext* _gc = osg::GraphicsContext::createGraphicsContext(traits.get());
 
-	osgCam->setGraphicsContext(_gc); 
+//	osgCam->setGraphicsContext(_gc); 
 
 	//pbuffer context end
 
@@ -179,13 +184,13 @@ int main(int argc, char** argv)
 	osgDB::writeImageFile(*zImage,"depth.bmp"); 
 	
 
-	float z = ((float*)zImageData->data())[1];
-	std::cout << "z value : " << z << std::endl; 
-	//std::cout << "z value : " << (z/(pow(2.0,24)-1.0)) << std::endl; 
+// 	float z = ((float*)zImageData->data())[1];
+// 	std::cout << "z value : " << z << std::endl; 
+// 	//std::cout << "z value : " << (z/(pow(2.0,24)-1.0)) << std::endl; 
+// 
+// 	float true_distance = farplane*nearplane/(farplane - z*(farplane-nearplane));
+// 	std::cout << "z distance value : " <<  true_distance << std::endl; 
 
-	float true_distance = farplane*nearplane/(farplane - z*(farplane-nearplane));
-	std::cout << "z distance value : " <<  true_distance << std::endl; 
 
-
-	return 0;
+	return 0;//viewer.run();
 }
