@@ -21,23 +21,23 @@ const float farplane = 200;
 const float camera_high = 5;
 
 
-/*
+
 class postprocessing: public osg::Camera::DrawCallback
 {
 public:
    postprocessing(osg::ref_ptr<osg::Image> colorImage, osg::ref_ptr<osg::Image> zImage, osg::ref_ptr<osg::Image> zImageData = new osg::Image)
    {
-    osg::ref_ptr<osg::Image> _colorImage=colorImage;
-    osg::ref_ptr<osg::Image> _zImage=zImage;
-    osg::ref_ptr<osg::Image> _zImageData=zImageData;
+    _colorImage=colorImage;
+    _zImage=zImage;
+    _zImageData=zImageData;
 
    } 
    
-  virtual void operator()(osg::RenderInfo& renderInfo)
+  void operator()(osg::RenderInfo& renderInfo) const
   {
 
-    osgDB::writeImageFile(*_colorImage,"color.bmp");
-	osgDB::writeImageFile(*_colorImage,"depth.bmp"); 
+	osgDB::writeImageFile(*_colorImage,"color.bmp");
+	osgDB::writeImageFile(*_zImage,"depth.bmp"); 
 	
 
 	float z = ((float*)_zImageData->data())[1];
@@ -53,7 +53,7 @@ public:
   osg::ref_ptr<osg::Image> _zImage;
   osg::ref_ptr<osg::Image> _zImageData;
 
-};*/
+};
 
 
 
@@ -217,20 +217,12 @@ int main(int argc, char** argv)
 
 	//pbuffer context end
 
-	//osgCam->setPreDrawCallback(new postprocessing(colorImage,zImage,zImageData));
+	osgCam->setPostDrawCallback(new postprocessing(colorImage,zImage,zImageData));
+	
+	viewer.setThreadingModel(osgViewer::ViewerBase::SingleThreaded);
+	
 	viewer.frame();
 	
-	usleep(1000000);
-	osgDB::writeImageFile(*colorImage,"color.bmp");
-	osgDB::writeImageFile(*zImage,"depth.bmp"); 
-	
-
-	float z = ((float*)zImageData->data())[1];
-	std::cout << "z value : " << z << std::endl; 
-	//std::cout << "z value : " << (z/(pow(2.0,24)-1.0)) << std::endl; 
-
-	float true_distance = farplane*nearplane/(farplane - z*(farplane-nearplane));
-	std::cout << "z distance value : " <<  true_distance << std::endl; 
 	
 	return 0;//viewer.run();
 }
