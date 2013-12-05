@@ -15,6 +15,48 @@
 #include <unistd.h>
 #include <math.h>
 
+const int beamRadius = 700;
+const float nearplane = 0.2;
+const float farplane = 200;
+const float camera_high = 5;
+
+
+/*
+class postprocessing: public osg::Camera::DrawCallback
+{
+public:
+   postprocessing(osg::ref_ptr<osg::Image> colorImage, osg::ref_ptr<osg::Image> zImage, osg::ref_ptr<osg::Image> zImageData = new osg::Image)
+   {
+    osg::ref_ptr<osg::Image> _colorImage=colorImage;
+    osg::ref_ptr<osg::Image> _zImage=zImage;
+    osg::ref_ptr<osg::Image> _zImageData=zImageData;
+
+   } 
+   
+  virtual void operator()(osg::RenderInfo& renderInfo)
+  {
+
+    osgDB::writeImageFile(*_colorImage,"color.bmp");
+	osgDB::writeImageFile(*_colorImage,"depth.bmp"); 
+	
+
+	float z = ((float*)_zImageData->data())[1];
+	std::cout << "z value : " << z << std::endl; 
+	//std::cout << "z value : " << (z/(pow(2.0,24)-1.0)) << std::endl; 
+
+	float true_distance = farplane*nearplane/(farplane - z*(farplane-nearplane));
+	std::cout << "z distance value : " <<  true_distance << std::endl; 
+     
+  }
+  
+  osg::ref_ptr<osg::Image> _colorImage;
+  osg::ref_ptr<osg::Image> _zImage;
+  osg::ref_ptr<osg::Image> _zImageData;
+
+};*/
+
+
+
 int main(int argc, char** argv)
 {
 	/*Variable Declaration*/
@@ -116,45 +158,43 @@ int main(int argc, char** argv)
 
         // Simulation variables
 
-	int beamRadius = 700;
-	float nearplane = 0.2;
-	float farplane = 200;
-
 	osgViewer::Viewer viewer;
 	viewer.setSceneData( root );
 
 	
+	//Save to images
 	
+	
+	osg::ref_ptr<osg::Image> colorImage= new osg::Image;
+	osg::ref_ptr<osg::Image> zImage = new osg::Image;
+	osg::ref_ptr<osg::Image> zImageData = new osg::Image;
 
+	colorImage->allocateImage(720, 576, 1, GL_RGB, GL_UNSIGNED_BYTE);
+	zImage->allocateImage(720, 576, 1, GL_DEPTH_COMPONENT ,GL_UNSIGNED_BYTE); 
+	zImageData->allocateImage(720, 576, 1, GL_DEPTH_COMPONENT ,GL_FLOAT); 
+	
+	
 	//Set up camera
+
 
 	osg::ref_ptr<osg::Camera> osgCam = new osg::Camera;
 	
 	osgCam = viewer.getCamera();
 	
-	osg::ref_ptr<osg::Image> colorImage= new osg::Image;
-	osg::ref_ptr<osg::Image> zImage = new osg::Image;
-	//osg::ref_ptr<osg::Image> zImageData = new osg::Image;
-
-	colorImage->allocateImage(720, 576, 1, GL_RGBA, GL_UNSIGNED_BYTE);
-	zImage->allocateImage(720, 576, 1, GL_DEPTH_COMPONENT ,GL_UNSIGNED_BYTE); 
-	//zImageData->allocateImage(720, 576, 1, GL_DEPTH_COMPONENT ,GL_FLOAT); 
-	
-	osgCam->setViewport(new osg::Viewport(0,0,720,576)); 
-
-	
 	osgCam->setClearColor(osg::Vec4(0.1f,0.1f,0.3f,1.0f));
 	osgCam->setClearMask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
+	
+	osgCam->setViewport(new osg::Viewport(0,0,720,576)); 
 	
 	osgCam->setComputeNearFarMode(osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR);
 	osgCam->setReferenceFrame(osg::Camera::ABSOLUTE_RF);
 	osgCam->setProjectionMatrixAsPerspective(45.0, 1.0, nearplane, farplane); 
-	osgCam->setViewMatrixAsLookAt(osg::Vec3(0,0,5), osg::Vec3(0,0,0), osg::Vec3(0,1,0) );
+	osgCam->setViewMatrixAsLookAt(osg::Vec3(0,0,camera_high), osg::Vec3(0,0,0), osg::Vec3(0,1,0) );
   
 	//osgCam->setRenderTargetImplementation( osg::Camera::PIXEL_BUFFER );
 	osgCam->attach(osg::Camera::COLOR_BUFFER, colorImage);
+// 	osgCam->attach(osg::Camera::DEPTH_BUFFER, zImageData); //CANNOT HAVE TWO DEPTH_BUFFER ATTACHMENTS
 	osgCam->attach(osg::Camera::DEPTH_BUFFER, zImage); 
-// 	osgCam->attach(osg::Camera::DEPTH_BUFFER, zImageData); 
 
 	
 	//pbuffer context begin
@@ -173,24 +213,24 @@ int main(int argc, char** argv)
 
 	osg::GraphicsContext* _gc = osg::GraphicsContext::createGraphicsContext(traits.get());
 
-//	osgCam->setGraphicsContext(_gc); 
+	osgCam->setGraphicsContext(_gc); 
 
 	//pbuffer context end
 
+	//osgCam->setPreDrawCallback(new postprocessing(colorImage,zImage,zImageData));
 	viewer.frame();
-
-	usleep(10000);
+	
+	usleep(1000000);
 	osgDB::writeImageFile(*colorImage,"color.bmp");
 	osgDB::writeImageFile(*zImage,"depth.bmp"); 
 	
 
-// 	float z = ((float*)zImageData->data())[1];
-// 	std::cout << "z value : " << z << std::endl; 
-// 	//std::cout << "z value : " << (z/(pow(2.0,24)-1.0)) << std::endl; 
-// 
-// 	float true_distance = farplane*nearplane/(farplane - z*(farplane-nearplane));
-// 	std::cout << "z distance value : " <<  true_distance << std::endl; 
+	float z = ((float*)zImageData->data())[1];
+	std::cout << "z value : " << z << std::endl; 
+	//std::cout << "z value : " << (z/(pow(2.0,24)-1.0)) << std::endl; 
 
-
+	float true_distance = farplane*nearplane/(farplane - z*(farplane-nearplane));
+	std::cout << "z distance value : " <<  true_distance << std::endl; 
+	
 	return 0;//viewer.run();
 }
