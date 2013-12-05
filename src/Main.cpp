@@ -193,8 +193,8 @@ int main(int argc, char** argv)
   
 	//osgCam->setRenderTargetImplementation( osg::Camera::PIXEL_BUFFER );
 	osgCam->attach(osg::Camera::COLOR_BUFFER, colorImage);
-// 	osgCam->attach(osg::Camera::DEPTH_BUFFER, zImageData); //CANNOT HAVE TWO DEPTH_BUFFER ATTACHMENTS
-	osgCam->attach(osg::Camera::DEPTH_BUFFER, zImage); 
+ 	osgCam->attach(osg::Camera::DEPTH_BUFFER, zImageData); //CANNOT HAVE TWO DEPTH_BUFFER ATTACHMENTS
+//	osgCam->attach(osg::Camera::DEPTH_BUFFER, zImage); 
 
 	
 	//pbuffer context begin
@@ -222,7 +222,6 @@ int main(int argc, char** argv)
 	viewer.setThreadingModel(osgViewer::ViewerBase::SingleThreaded);
 	
 	viewer.frame();
-	
 	
 	return 0;//viewer.run();
 }
