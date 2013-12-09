@@ -199,8 +199,8 @@ _openscenegraph_PKGCONFIG_lib:FILEPATH=/usr/lib/libOpenThreads.so
 //Value Computed by CMake
 osgSonartest_BINARY_DIR:STATIC=/home/rockstar/Documents/Rock/debugs/osgSonartest/build
 
-//Dependencies for target
-osgSonartest_LIB_DEPENDS:STATIC=
+//Dependencies for the target
+osgSonartest_LIB_DEPENDS:STATIC=general;/usr/lib/libosg.so;general;/usr/lib/libosgDB.so;general;/usr/lib/libosgFX.so;general;/usr/lib/libosgGA.so;general;/usr/lib/libosgParticle.so;general;/usr/lib/libosgSim.so;general;/usr/lib/libosgText.so;general;/usr/lib/libosgUtil.so;general;/usr/lib/libosgTerrain.so;general;/usr/lib/libosgManipulator.so;general;/usr/lib/libosgViewer.so;general;/usr/lib/libosgWidget.so;general;/usr/lib/libosgShadow.so;general;/usr/lib/libosgAnimation.so;general;/usr/lib/libosgVolume.so;general;/usr/lib/libOpenThreads.so;
 
 //Value Computed by CMake
 osgSonartest_SOURCE_DIR:STATIC=/home/rockstar/Documents/Rock/debugs/osgSonartest

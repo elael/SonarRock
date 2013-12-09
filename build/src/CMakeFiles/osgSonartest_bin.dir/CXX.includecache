@@ -6,9 +6,11 @@
 
 #IncludeRegexTransform: 
 
-/home/rockstar/Documents/Rock/debugs/osgSonartest/src/Main.cpp
-iostream
--
+/home/rockstar/Documents/Rock/debugs/osgSonartest/src/SonarSimple.cpp
+SonarSimple.hpp
+/home/rockstar/Documents/Rock/debugs/osgSonartest/src/SonarSimple.hpp
+
+/home/rockstar/Documents/Rock/debugs/osgSonartest/src/SonarSimple.hpp
 osgDB/ReadFile
 -
 osgViewer/Viewer
@@ -35,8 +37,8 @@ osg/PositionAttitudeTransform
 -
 osgDB/WriteFile
 -
-unistd.h
--
 math.h
+-
+iostream
 -
 

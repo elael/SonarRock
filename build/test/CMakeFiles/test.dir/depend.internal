@@ -5,4 +5,4 @@ test/CMakeFiles/test.dir/suite.cpp.o
  /home/rockstar/Documents/Rock/debugs/osgSonartest/test/suite.cpp
 test/CMakeFiles/test.dir/test_Dummy.cpp.o
  /home/rockstar/Documents/Rock/debugs/osgSonartest/test/test_Dummy.cpp
- include/osgSonartest/Dummy.hpp
+ include/osgSonartest/SonarSimple.hpp

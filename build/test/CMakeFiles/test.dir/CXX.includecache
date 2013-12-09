@@ -6,17 +6,41 @@
 
 #IncludeRegexTransform: 
 
-/home/rockstar/Documents/Rock/debugs/osgSonartest/test/suite.cpp
-boost/test/included/unit_test.hpp
--
-
 /home/rockstar/Documents/Rock/debugs/osgSonartest/test/test_Dummy.cpp
 boost/test/unit_test.hpp
 -
-osgSonartest/Dummy.hpp
+osgSonartest/SonarSimple.hpp
 -
 
-include/osgSonartest/Dummy.hpp
+include/osgSonartest/SonarSimple.hpp
+osgDB/ReadFile
+-
+osgViewer/Viewer
+-
+osg/Geode
+-
+osg/Shape
+-
+osg/Material
+-
+osg/Texture2D
+-
+osg/Geometry
+-
+osg/ref_ptr
+-
+osg/ShapeDrawable
+-
+osg/Plane
+-
+osg/CullSettings
+-
+osg/PositionAttitudeTransform
+-
+osgDB/WriteFile
+-
+math.h
+-
 iostream
 -
 

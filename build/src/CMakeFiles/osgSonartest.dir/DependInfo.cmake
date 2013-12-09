@@ -4,7 +4,7 @@ SET(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 SET(CMAKE_DEPENDS_CHECK_CXX
-  "/home/rockstar/Documents/Rock/debugs/osgSonartest/src/Dummy.cpp" "/home/rockstar/Documents/Rock/debugs/osgSonartest/build/src/CMakeFiles/osgSonartest.dir/Dummy.cpp.o"
+  "/home/rockstar/Documents/Rock/debugs/osgSonartest/src/SonarSimple.cpp" "/home/rockstar/Documents/Rock/debugs/osgSonartest/build/src/CMakeFiles/osgSonartest.dir/SonarSimple.cpp.o"
   )
 SET(CMAKE_CXX_COMPILER_ID "GNU")
 

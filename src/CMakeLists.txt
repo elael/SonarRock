@@ -1,8 +1,9 @@
 rock_library(osgSonartest
-    SOURCES Dummy.cpp
-    HEADERS Dummy.hpp)
+    SOURCES SonarSimple.cpp
+    HEADERS SonarSimple.hpp
+    DEPS_PKGCONFIG openscenegraph)
 
-rock_executable(osgSonartest_bin Main.cpp
+rock_executable(osgSonartest_bin SonarSimple.cpp
     DEPS osgSonartest
     LIBS curses
     DEPS_PKGCONFIG openscenegraph)

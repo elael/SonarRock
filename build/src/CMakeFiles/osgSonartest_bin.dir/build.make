@@ -46,37 +46,53 @@ include src/CMakeFiles/osgSonartest_bin.dir/progress.make
 # Include the compile flags for this target's objects.
 include src/CMakeFiles/osgSonartest_bin.dir/flags.make
 
-src/CMakeFiles/osgSonartest_bin.dir/Main.cpp.o: src/CMakeFiles/osgSonartest_bin.dir/flags.make
-src/CMakeFiles/osgSonartest_bin.dir/Main.cpp.o: ../src/Main.cpp
+src/CMakeFiles/osgSonartest_bin.dir/SonarSimple.cpp.o: src/CMakeFiles/osgSonartest_bin.dir/flags.make
+src/CMakeFiles/osgSonartest_bin.dir/SonarSimple.cpp.o: ../src/SonarSimple.cpp
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/rockstar/Documents/Rock/debugs/osgSonartest/build/CMakeFiles $(CMAKE_PROGRESS_1)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/CMakeFiles/osgSonartest_bin.dir/Main.cpp.o"
-	cd /home/rockstar/Documents/Rock/debugs/osgSonartest/build/src && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/osgSonartest_bin.dir/Main.cpp.o -c /home/rockstar/Documents/Rock/debugs/osgSonartest/src/Main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/CMakeFiles/osgSonartest_bin.dir/SonarSimple.cpp.o"
+	cd /home/rockstar/Documents/Rock/debugs/osgSonartest/build/src && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/osgSonartest_bin.dir/SonarSimple.cpp.o -c /home/rockstar/Documents/Rock/debugs/osgSonartest/src/SonarSimple.cpp
 
-src/CMakeFiles/osgSonartest_bin.dir/Main.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/osgSonartest_bin.dir/Main.cpp.i"
-	cd /home/rockstar/Documents/Rock/debugs/osgSonartest/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/rockstar/Documents/Rock/debugs/osgSonartest/src/Main.cpp > CMakeFiles/osgSonartest_bin.dir/Main.cpp.i
+src/CMakeFiles/osgSonartest_bin.dir/SonarSimple.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/osgSonartest_bin.dir/SonarSimple.cpp.i"
+	cd /home/rockstar/Documents/Rock/debugs/osgSonartest/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/rockstar/Documents/Rock/debugs/osgSonartest/src/SonarSimple.cpp > CMakeFiles/osgSonartest_bin.dir/SonarSimple.cpp.i
 
-src/CMakeFiles/osgSonartest_bin.dir/Main.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/osgSonartest_bin.dir/Main.cpp.s"
-	cd /home/rockstar/Documents/Rock/debugs/osgSonartest/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/rockstar/Documents/Rock/debugs/osgSonartest/src/Main.cpp -o CMakeFiles/osgSonartest_bin.dir/Main.cpp.s
+src/CMakeFiles/osgSonartest_bin.dir/SonarSimple.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/osgSonartest_bin.dir/SonarSimple.cpp.s"
+	cd /home/rockstar/Documents/Rock/debugs/osgSonartest/build/src && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/rockstar/Documents/Rock/debugs/osgSonartest/src/SonarSimple.cpp -o CMakeFiles/osgSonartest_bin.dir/SonarSimple.cpp.s
 
-src/CMakeFiles/osgSonartest_bin.dir/Main.cpp.o.requires:
-.PHONY : src/CMakeFiles/osgSonartest_bin.dir/Main.cpp.o.requires
+src/CMakeFiles/osgSonartest_bin.dir/SonarSimple.cpp.o.requires:
+.PHONY : src/CMakeFiles/osgSonartest_bin.dir/SonarSimple.cpp.o.requires
 
-src/CMakeFiles/osgSonartest_bin.dir/Main.cpp.o.provides: src/CMakeFiles/osgSonartest_bin.dir/Main.cpp.o.requires
-	$(MAKE) -f src/CMakeFiles/osgSonartest_bin.dir/build.make src/CMakeFiles/osgSonartest_bin.dir/Main.cpp.o.provides.build
-.PHONY : src/CMakeFiles/osgSonartest_bin.dir/Main.cpp.o.provides
+src/CMakeFiles/osgSonartest_bin.dir/SonarSimple.cpp.o.provides: src/CMakeFiles/osgSonartest_bin.dir/SonarSimple.cpp.o.requires
+	$(MAKE) -f src/CMakeFiles/osgSonartest_bin.dir/build.make src/CMakeFiles/osgSonartest_bin.dir/SonarSimple.cpp.o.provides.build
+.PHONY : src/CMakeFiles/osgSonartest_bin.dir/SonarSimple.cpp.o.provides
 
-src/CMakeFiles/osgSonartest_bin.dir/Main.cpp.o.provides.build: src/CMakeFiles/osgSonartest_bin.dir/Main.cpp.o
+src/CMakeFiles/osgSonartest_bin.dir/SonarSimple.cpp.o.provides.build: src/CMakeFiles/osgSonartest_bin.dir/SonarSimple.cpp.o
 
 # Object files for target osgSonartest_bin
 osgSonartest_bin_OBJECTS = \
-"CMakeFiles/osgSonartest_bin.dir/Main.cpp.o"
+"CMakeFiles/osgSonartest_bin.dir/SonarSimple.cpp.o"
 
 # External object files for target osgSonartest_bin
 osgSonartest_bin_EXTERNAL_OBJECTS =
 
-src/osgSonartest_bin: src/CMakeFiles/osgSonartest_bin.dir/Main.cpp.o
+src/osgSonartest_bin: src/CMakeFiles/osgSonartest_bin.dir/SonarSimple.cpp.o
+src/osgSonartest_bin: /usr/lib/libosg.so
+src/osgSonartest_bin: /usr/lib/libosgDB.so
+src/osgSonartest_bin: /usr/lib/libosgFX.so
+src/osgSonartest_bin: /usr/lib/libosgGA.so
+src/osgSonartest_bin: /usr/lib/libosgParticle.so
+src/osgSonartest_bin: /usr/lib/libosgSim.so
+src/osgSonartest_bin: /usr/lib/libosgText.so
+src/osgSonartest_bin: /usr/lib/libosgUtil.so
+src/osgSonartest_bin: /usr/lib/libosgTerrain.so
+src/osgSonartest_bin: /usr/lib/libosgManipulator.so
+src/osgSonartest_bin: /usr/lib/libosgViewer.so
+src/osgSonartest_bin: /usr/lib/libosgWidget.so
+src/osgSonartest_bin: /usr/lib/libosgShadow.so
+src/osgSonartest_bin: /usr/lib/libosgAnimation.so
+src/osgSonartest_bin: /usr/lib/libosgVolume.so
+src/osgSonartest_bin: /usr/lib/libOpenThreads.so
 src/osgSonartest_bin: /usr/lib/libosg.so
 src/osgSonartest_bin: /usr/lib/libosgDB.so
 src/osgSonartest_bin: /usr/lib/libosgFX.so
@@ -94,6 +110,22 @@ src/osgSonartest_bin: /usr/lib/libosgAnimation.so
 src/osgSonartest_bin: /usr/lib/libosgVolume.so
 src/osgSonartest_bin: /usr/lib/libOpenThreads.so
 src/osgSonartest_bin: src/libosgSonartest.so
+src/osgSonartest_bin: /usr/lib/libosg.so
+src/osgSonartest_bin: /usr/lib/libosgDB.so
+src/osgSonartest_bin: /usr/lib/libosgFX.so
+src/osgSonartest_bin: /usr/lib/libosgGA.so
+src/osgSonartest_bin: /usr/lib/libosgParticle.so
+src/osgSonartest_bin: /usr/lib/libosgSim.so
+src/osgSonartest_bin: /usr/lib/libosgText.so
+src/osgSonartest_bin: /usr/lib/libosgUtil.so
+src/osgSonartest_bin: /usr/lib/libosgTerrain.so
+src/osgSonartest_bin: /usr/lib/libosgManipulator.so
+src/osgSonartest_bin: /usr/lib/libosgViewer.so
+src/osgSonartest_bin: /usr/lib/libosgWidget.so
+src/osgSonartest_bin: /usr/lib/libosgShadow.so
+src/osgSonartest_bin: /usr/lib/libosgAnimation.so
+src/osgSonartest_bin: /usr/lib/libosgVolume.so
+src/osgSonartest_bin: /usr/lib/libOpenThreads.so
 src/osgSonartest_bin: src/CMakeFiles/osgSonartest_bin.dir/build.make
 src/osgSonartest_bin: src/CMakeFiles/osgSonartest_bin.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX executable osgSonartest_bin"
@@ -103,7 +135,7 @@ src/osgSonartest_bin: src/CMakeFiles/osgSonartest_bin.dir/link.txt
 src/CMakeFiles/osgSonartest_bin.dir/build: src/osgSonartest_bin
 .PHONY : src/CMakeFiles/osgSonartest_bin.dir/build
 
-src/CMakeFiles/osgSonartest_bin.dir/requires: src/CMakeFiles/osgSonartest_bin.dir/Main.cpp.o.requires
+src/CMakeFiles/osgSonartest_bin.dir/requires: src/CMakeFiles/osgSonartest_bin.dir/SonarSimple.cpp.o.requires
 .PHONY : src/CMakeFiles/osgSonartest_bin.dir/requires
 
 src/CMakeFiles/osgSonartest_bin.dir/clean:

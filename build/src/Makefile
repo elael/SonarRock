@@ -164,53 +164,32 @@ osgSonartest_bin/fast:
 	cd /home/rockstar/Documents/Rock/debugs/osgSonartest/build && $(MAKE) -f src/CMakeFiles/osgSonartest_bin.dir/build.make src/CMakeFiles/osgSonartest_bin.dir/build
 .PHONY : osgSonartest_bin/fast
 
-Dummy.o: Dummy.cpp.o
-.PHONY : Dummy.o
+SonarSimple.o: SonarSimple.cpp.o
+.PHONY : SonarSimple.o
 
 # target to build an object file
-Dummy.cpp.o:
-	cd /home/rockstar/Documents/Rock/debugs/osgSonartest/build && $(MAKE) -f src/CMakeFiles/osgSonartest.dir/build.make src/CMakeFiles/osgSonartest.dir/Dummy.cpp.o
-.PHONY : Dummy.cpp.o
+SonarSimple.cpp.o:
+	cd /home/rockstar/Documents/Rock/debugs/osgSonartest/build && $(MAKE) -f src/CMakeFiles/osgSonartest.dir/build.make src/CMakeFiles/osgSonartest.dir/SonarSimple.cpp.o
+	cd /home/rockstar/Documents/Rock/debugs/osgSonartest/build && $(MAKE) -f src/CMakeFiles/osgSonartest_bin.dir/build.make src/CMakeFiles/osgSonartest_bin.dir/SonarSimple.cpp.o
+.PHONY : SonarSimple.cpp.o
 
-Dummy.i: Dummy.cpp.i
-.PHONY : Dummy.i
-
-# target to preprocess a source file
-Dummy.cpp.i:
-	cd /home/rockstar/Documents/Rock/debugs/osgSonartest/build && $(MAKE) -f src/CMakeFiles/osgSonartest.dir/build.make src/CMakeFiles/osgSonartest.dir/Dummy.cpp.i
-.PHONY : Dummy.cpp.i
-
-Dummy.s: Dummy.cpp.s
-.PHONY : Dummy.s
-
-# target to generate assembly for a file
-Dummy.cpp.s:
-	cd /home/rockstar/Documents/Rock/debugs/osgSonartest/build && $(MAKE) -f src/CMakeFiles/osgSonartest.dir/build.make src/CMakeFiles/osgSonartest.dir/Dummy.cpp.s
-.PHONY : Dummy.cpp.s
-
-Main.o: Main.cpp.o
-.PHONY : Main.o
-
-# target to build an object file
-Main.cpp.o:
-	cd /home/rockstar/Documents/Rock/debugs/osgSonartest/build && $(MAKE) -f src/CMakeFiles/osgSonartest_bin.dir/build.make src/CMakeFiles/osgSonartest_bin.dir/Main.cpp.o
-.PHONY : Main.cpp.o
-
-Main.i: Main.cpp.i
-.PHONY : Main.i
+SonarSimple.i: SonarSimple.cpp.i
+.PHONY : SonarSimple.i
 
 # target to preprocess a source file
-Main.cpp.i:
-	cd /home/rockstar/Documents/Rock/debugs/osgSonartest/build && $(MAKE) -f src/CMakeFiles/osgSonartest_bin.dir/build.make src/CMakeFiles/osgSonartest_bin.dir/Main.cpp.i
-.PHONY : Main.cpp.i
+SonarSimple.cpp.i:
+	cd /home/rockstar/Documents/Rock/debugs/osgSonartest/build && $(MAKE) -f src/CMakeFiles/osgSonartest.dir/build.make src/CMakeFiles/osgSonartest.dir/SonarSimple.cpp.i
+	cd /home/rockstar/Documents/Rock/debugs/osgSonartest/build && $(MAKE) -f src/CMakeFiles/osgSonartest_bin.dir/build.make src/CMakeFiles/osgSonartest_bin.dir/SonarSimple.cpp.i
+.PHONY : SonarSimple.cpp.i
 
-Main.s: Main.cpp.s
-.PHONY : Main.s
+SonarSimple.s: SonarSimple.cpp.s
+.PHONY : SonarSimple.s
 
 # target to generate assembly for a file
-Main.cpp.s:
-	cd /home/rockstar/Documents/Rock/debugs/osgSonartest/build && $(MAKE) -f src/CMakeFiles/osgSonartest_bin.dir/build.make src/CMakeFiles/osgSonartest_bin.dir/Main.cpp.s
-.PHONY : Main.cpp.s
+SonarSimple.cpp.s:
+	cd /home/rockstar/Documents/Rock/debugs/osgSonartest/build && $(MAKE) -f src/CMakeFiles/osgSonartest.dir/build.make src/CMakeFiles/osgSonartest.dir/SonarSimple.cpp.s
+	cd /home/rockstar/Documents/Rock/debugs/osgSonartest/build && $(MAKE) -f src/CMakeFiles/osgSonartest_bin.dir/build.make src/CMakeFiles/osgSonartest_bin.dir/SonarSimple.cpp.s
+.PHONY : SonarSimple.cpp.s
 
 # Help Target
 help:
@@ -226,12 +205,9 @@ help:
 	@echo "... osgSonartest"
 	@echo "... osgSonartest_bin"
 	@echo "... rebuild_cache"
-	@echo "... Dummy.o"
-	@echo "... Dummy.i"
-	@echo "... Dummy.s"
-	@echo "... Main.o"
-	@echo "... Main.i"
-	@echo "... Main.s"
+	@echo "... SonarSimple.o"
+	@echo "... SonarSimple.i"
+	@echo "... SonarSimple.s"
 .PHONY : help
 
 

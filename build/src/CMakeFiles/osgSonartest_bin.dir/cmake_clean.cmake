@@ -1,5 +1,5 @@
 FILE(REMOVE_RECURSE
-  "CMakeFiles/osgSonartest_bin.dir/Main.cpp.o"
+  "CMakeFiles/osgSonartest_bin.dir/SonarSimple.cpp.o"
   "osgSonartest_bin.pdb"
   "osgSonartest_bin"
 )
