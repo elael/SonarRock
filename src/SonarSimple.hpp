@@ -15,15 +15,21 @@
 #include <osg/PositionAttitudeTransform>
 #include <osgDB/WriteFile>
 #include <math.h>
+#include "Config.hpp"
+#include "base/samples/sonar_beam.h"
 
 namespace sonar_simple
 {
   
   class SonarBeamGL{
 
-  static int beamRadius;
-  static float nearplane;
-  static float farplane;
+  double beamradius_horizontal;
+  double beamradius_vertical;
+  float nearplane;
+  float farplane;
+  int pixel_resolution_y;
+  int pixel_resolution_x;
+  double aspect_ratio;
   static float camera_high;
   
   
@@ -63,16 +69,22 @@ namespace sonar_simple
   };
   friend class postprocessing;
   
-  postprocessing* postprocessor;
+  osg::ref_ptr<postprocessing> postprocessor;
+  base::samples::SonarBeam sonar_beam_buffer;
+  base::samples::SonarBeam* sonar_beam_out;
+  
+  void initial_settings();
   
 public:
-  SonarBeamGL(osg::ref_ptr<osg::Node> scene);
+  void setpixelresoltiony(int npixel){pixel_resolution_y = 2*floor(npixel/2.0)+1;};
+  SonarBeamGL(const Config& config = Config(), osg::ref_ptr<osg::Node> scene = CreateSimpleScene());
   
   static osg::ref_ptr<osg::Node> CreateSimpleScene();
-  void Distance();
+  void Configure(const Config& config);
+  void getBeam(base::samples::SonarBeam &Beam);
   void setDataSender(void (*senderFunction)(float));
-  void Distanceto(osg::Vec3 lookto){setLookto(lookto);return Distance();};
-  void Distancefrom(osg::Vec3 center){setSonarPosition(center);return Distance();};
+  void Distanceto(osg::Vec3 lookto,base::samples::SonarBeam &Beam){setLookto(lookto);return getBeam(Beam);};
+  void Distancefrom(osg::Vec3 center,base::samples::SonarBeam &Beam){setSonarPosition(center);return getBeam(Beam);};
   void setLookto(osg::Vec3 lookto){SonarLookto=lookto;};
   void setSonarPosition(osg::Vec3 center){SonarCenter=center;};
   

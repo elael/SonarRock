@@ -5,33 +5,57 @@
 namespace sonar_simple{
   
   
-int SonarBeamGL::beamRadius = 700;
-float SonarBeamGL::nearplane = 0.2;
-float SonarBeamGL::farplane = 200;
-float SonarBeamGL::camera_high = 6;
-
-
+float SonarBeamGL::camera_high = 5;
 
 
 SonarBeamGL::postprocessing::postprocessing(SonarBeamGL* thisSonar): sonar(thisSonar) {} 
 
 void SonarBeamGL::postprocessing::operator()(osg::RenderInfo& renderInfo) const
 {
+       //copy data into SonarBeam
+      sonar->sonar_beam_buffer.time = base::Time::now();
       
 
-      sonar->z = ((float*)sonar->zImageData->data())[1];
+      
+      sonar->z = *(float*)(sonar->zImageData->data((sonar->pixel_resolution_x-1)/2,(sonar->pixel_resolution_y-1)/2));//360,288
       
      // float true_distance = farplane*nearplane/(farplane - z*(farplane-nearplane));
       
-      (*sonar->sendDistance)( farplane*nearplane/(farplane - sonar->z*(farplane-nearplane)));
+      (*sonar->sendDistance)( sonar->farplane*sonar->nearplane/(sonar->farplane - sonar->z*(sonar->farplane-sonar->nearplane)));
+}
+
+void SonarBeamGL::Configure(const Config& config)
+{
+  //OSG configuration
+  setpixelresoltiony(720);
+  nearplane=config.minimum_range;
+  farplane=config.maximum_range;
+  beamradius_horizontal = nearplane*tan(config.beamwidth_horizontal/2.0);
+  beamradius_vertical = nearplane*tan(config.beamwidth_vertical/2.0);
+  aspect_ratio = beamradius_horizontal/beamradius_vertical;
+  pixel_resolution_x = (int)(2*floor(round(aspect_ratio*pixel_resolution_y)/2.0)+1);
+  
+  //SonarBeam configuration
+  sonar_beam_buffer.sampling_interval = config.sampling_interval;
+  sonar_beam_buffer.speed_of_sound = config.speed_of_sound;
+  sonar_beam_buffer.beamwidth_vertical = config.beamwidth_vertical;
+  sonar_beam_buffer.beamwidth_horizontal = config.beamwidth_horizontal;
 }
 
 
 
-SonarBeamGL::SonarBeamGL(osg::ref_ptr< osg::Node > scene)
+SonarBeamGL::SonarBeamGL(const Config& config, osg::ref_ptr< osg::Node > scene)
 {
+	Configure(config);
 
 	root=scene;
+	
+	initial_settings();
+
+}
+
+void SonarBeamGL::initial_settings()
+{
         // Simulation variables
 	viewer.setSceneData( root );
 
@@ -58,11 +82,12 @@ SonarBeamGL::SonarBeamGL(osg::ref_ptr< osg::Node > scene)
 	osgCam->setClearColor(osg::Vec4(0.1f,0.1f,0.3f,1.0f));
 	osgCam->setClearMask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 	
-	osgCam->setViewport(new osg::Viewport(0,0,720,576)); 
+	
+	osgCam->setViewport(new osg::Viewport(0,0,pixel_resolution_x,pixel_resolution_y)); //720, 576
 	
 	osgCam->setComputeNearFarMode(osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR);
 	osgCam->setReferenceFrame(osg::Camera::ABSOLUTE_RF);
-	osgCam->setProjectionMatrixAsPerspective(45.0, 1.0, nearplane, farplane); 
+	osgCam->setProjectionMatrixAsPerspective(sonar_beam_buffer.beamwidth_vertical, aspect_ratio, nearplane, farplane); 
   
 	//osgCam->setRenderTargetImplementation( osg::Camera::PIXEL_BUFFER );
 	osgCam->attach(osg::Camera::COLOR_BUFFER, colorImage);
@@ -79,8 +104,8 @@ SonarBeamGL::SonarBeamGL(osg::ref_ptr< osg::Node > scene)
 	osg::GraphicsContext::Traits;
 	traits->x =0;
 	traits->y = 0;
-	traits->width = 720;
-	traits->height = 576; 
+	traits->width = pixel_resolution_x;
+	traits->height = pixel_resolution_y; 
 	traits->windowDecoration = false;
 	traits->doubleBuffer = false;
 	traits->sharedContext = 0;
@@ -94,6 +119,7 @@ SonarBeamGL::SonarBeamGL(osg::ref_ptr< osg::Node > scene)
 	//pbuffer context end
 
 	postprocessor = new postprocessing(this);
+	
 	osgCam->setPostDrawCallback(postprocessor);
 	
 	viewer.setThreadingModel(osgViewer::ViewerBase::SingleThreaded);
@@ -119,7 +145,7 @@ osg::ref_ptr<osg::Node> SonarBeamGL::CreateSimpleScene()
 	float      height;
 	float	radius;
 
-	center = osg::Vec3(1.0f, 0.0f, 0.0f);
+	center = osg::Vec3(0.0f, 0.0f, 0.0f);
 	height = 2;
 	radius = 0.1;
 	
@@ -153,7 +179,9 @@ osg::ref_ptr<osg::Node> SonarBeamGL::CreateSimpleScene()
     sphere = new osg::Sphere(center,1.5f*radius); 
 	sphereDrawable = new osg::ShapeDrawable(sphere );
 	
-	//   A geode to hold our figures
+	//   A geode to hold our figures:
+	
+	// The Cylinder with Sphere
 	geode[0] = new osg::Geode;
 	geode[0]->addDrawable(cylinderDrawable); 
 	geode[0]->addDrawable(sphereDrawable); 
@@ -161,15 +189,19 @@ osg::ref_ptr<osg::Node> SonarBeamGL::CreateSimpleScene()
 	cylinderPlaced->setPosition(osg::Vec3d(-2,0,1.5f));
 	cylinderPlaced->addChild(geode[0]);
 
+	// The box
 	geode[1] = new osg::Geode;
 	geode[1]->addDrawable(boxDrawable); 
 	boxPlaced = new osg::PositionAttitudeTransform();
-	boxPlaced->setPosition(osg::Vec3d(0,-1,1));
+  	boxPlaced->setPosition(osg::Vec3d(0,-0.5,1));
+// 	boxPlaced->setPosition(osg::Vec3d(0,0,1));
 	boxPlaced->addChild(geode[1]);
 
+	// The Sphere
 	geode[2] = new osg::Geode;
 	geode[2]->addDrawable(sphereDrawable); 
 
+	// The floor
 	geode[3] = new osg::Geode;
 	geode[3]->addDrawable(planeGeo); 
 
@@ -181,27 +213,30 @@ osg::ref_ptr<osg::Node> SonarBeamGL::CreateSimpleScene()
 	scene->addChild(boxPlaced); 
 	scene->addChild(geode[2]); 
 	scene->addChild(geode[3]); 
-	//root->addChild(osgDB::readNodeFile("cessna.osg"));//"D:\\Documents\\3dsMax\\export\\wooddebri3.3DS")
-
-	//boxDrawable = new osg::ShapeDrawable(osg::InfinitePlane(osg::Plane(0,0,1,0)));
-	//root->addChild((geode[3] = new osg::Geode())->addDrawable(new osg::ShapeDrawable(osg::Plane(0,0,1,0))));
 	
 	return scene;
 
 }
 
-void SonarBeamGL::Distance(){
+void SonarBeamGL::getBeam(base::samples::SonarBeam& Beam)
+{
+//   std::cout << SonarLookto.x() << SonarLookto.y() << SonarLookto.z() << std::endl; //Cout Lookto
   osgCam->setViewMatrixAsLookAt(SonarCenter, SonarLookto, osg::Vec3(0,1,0) );
+  sonar_beam_out = &Beam;
   viewer.frame();
   
   //For test purposes:
   
   osgDB::writeImageFile(*(colorImage),"color.bmp");
+    
+  std::cout << "sonar bearing : " << sonar_beam_buffer.bearing << std::endl;
+  
   //osgDB::writeImageFile(*(zImage),"depth.bmp");  //Cannot be used at the same time as zImageData
   
   std::cout << "z value : " << z << std::endl;
   
   //std::cout << "z value : " << (z/(pow(2.0,24)-1.0)) << std::endl; 
+
 }
 
 void SonarBeamGL::setDataSender(void (*senderFunction)(float))
@@ -220,11 +255,13 @@ void coutData(float data){
 
 int main(int argc, char** argv)
 {
-	SonarBeamGL sonar(SonarBeamGL::CreateSimpleScene());
+	SonarBeamGL sonar;
 	
 	sonar.setDataSender(coutData);
 	
-	sonar.Distance();
+	base::samples::SonarBeam test;
+	
+	sonar.getBeam(test);
 		
 	return 0;//viewer.run();
 }
