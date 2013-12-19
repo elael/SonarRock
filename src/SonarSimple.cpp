@@ -7,6 +7,12 @@ namespace sonar_simple{
   
 float SonarBeamGL::camera_high = 5;
 
+void SonarBeamGL::addBearing(double degBearing)
+{
+sonar_beam_buffer.bearing=base::Angle.fromDeg(sonar_beam_buffer.bearing.getDeg()+degBearing);
+}
+
+
 
 SonarBeamGL::postprocessing::postprocessing(SonarBeamGL* thisSonar): sonar(thisSonar) {} 
 
@@ -15,13 +21,16 @@ void SonarBeamGL::postprocessing::operator()(osg::RenderInfo& renderInfo) const
        //copy data into SonarBeam
       sonar->sonar_beam_buffer.time = base::Time::now();
       
-
+      sonar->sonar_beam_buffer.getSpatialResolution();
       
-      sonar->z = *(float*)(sonar->zImageData->data((sonar->pixel_resolution_x-1)/2,(sonar->pixel_resolution_y-1)/2));//360,288
+      sonar->z = *(float*)(sonar->zImageData->data((sonar->pixel_resolution_x-1)/2,(sonar->pixel_resolution_y-1)/2));//30,360
+      
+      std::cout << sonar->pixel_resolution_x << " " << sonar->pixel_resolution_y << std::endl;
       
      // float true_distance = farplane*nearplane/(farplane - z*(farplane-nearplane));
       
       (*sonar->sendDistance)( sonar->farplane*sonar->nearplane/(sonar->farplane - sonar->z*(sonar->farplane-sonar->nearplane)));
+      
 }
 
 void SonarBeamGL::Configure(const Config& config)
@@ -30,16 +39,20 @@ void SonarBeamGL::Configure(const Config& config)
   setpixelresoltiony(720);
   nearplane=config.minimum_range;
   farplane=config.maximum_range;
-  beamradius_horizontal = nearplane*tan(config.beamwidth_horizontal/2.0);
-  beamradius_vertical = nearplane*tan(config.beamwidth_vertical/2.0);
-  aspect_ratio = beamradius_horizontal/beamradius_vertical;
+  aspect_ratio = tan(config.beamwidth_horizontal/2.0)/tan(config.beamwidth_vertical/2.0);
   pixel_resolution_x = (int)(2*floor(round(aspect_ratio*pixel_resolution_y)/2.0)+1);
+
   
   //SonarBeam configuration
   sonar_beam_buffer.sampling_interval = config.sampling_interval;
   sonar_beam_buffer.speed_of_sound = config.speed_of_sound;
   sonar_beam_buffer.beamwidth_vertical = config.beamwidth_vertical;
   sonar_beam_buffer.beamwidth_horizontal = config.beamwidth_horizontal;
+  sonar_beam_buffer.bearing = base::Angle.fromDeg(0);
+  
+  std::cout << "config beamwidth h" << RadiantoDegree(config.beamwidth_horizontal) << " v" << RadiantoDegree(config.beamwidth_vertical) << std::endl;
+  
+//   sonar_beam_buffer.beamwidth_vertical = 35;
 }
 
 
@@ -64,12 +77,12 @@ void SonarBeamGL::initial_settings()
 	
 	
 	colorImage= new osg::Image;
-	zImage = new osg::Image;
 	zImageData = new osg::Image;
+// 	zImage = new osg::Image;
 
-	colorImage->allocateImage(720, 576, 1, GL_RGB, GL_UNSIGNED_BYTE);
-	zImage->allocateImage(720, 576, 1, GL_DEPTH_COMPONENT ,GL_UNSIGNED_BYTE); 
-	zImageData->allocateImage(720, 576, 1, GL_DEPTH_COMPONENT ,GL_FLOAT); 
+	colorImage->allocateImage(pixel_resolution_x, pixel_resolution_y, 1, GL_RGB, GL_UNSIGNED_BYTE);
+	zImageData->allocateImage(pixel_resolution_x, pixel_resolution_y, 1, GL_DEPTH_COMPONENT ,GL_FLOAT); 
+// 	zImage->allocateImage(720, 576, 1, GL_DEPTH_COMPONENT ,GL_UNSIGNED_BYTE); 
 	
 	
 	//Set up camera
@@ -87,7 +100,7 @@ void SonarBeamGL::initial_settings()
 	
 	osgCam->setComputeNearFarMode(osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR);
 	osgCam->setReferenceFrame(osg::Camera::ABSOLUTE_RF);
-	osgCam->setProjectionMatrixAsPerspective(sonar_beam_buffer.beamwidth_vertical, aspect_ratio, nearplane, farplane); 
+	osgCam->setProjectionMatrixAsPerspective(RadiantoDegree(sonar_beam_buffer.beamwidth_vertical), aspect_ratio, nearplane, farplane); 
   
 	//osgCam->setRenderTargetImplementation( osg::Camera::PIXEL_BUFFER );
 	osgCam->attach(osg::Camera::COLOR_BUFFER, colorImage);
@@ -110,7 +123,7 @@ void SonarBeamGL::initial_settings()
 	traits->doubleBuffer = false;
 	traits->sharedContext = 0;
 	traits->useMultiThreadedOpenGLEngine = false;
-	//traits->pbuffer = true;
+	traits->pbuffer = true;
 
 	osg::GraphicsContext* _gc = osg::GraphicsContext::createGraphicsContext(traits.get());
 
@@ -168,11 +181,11 @@ osg::ref_ptr<osg::Node> SonarBeamGL::CreateSimpleScene()
 
 
 	//	A drawable cylinder
-    cylinder = new osg::Cylinder(center,radius,height); 
+	cylinder = new osg::Cylinder(center,radius,height); 
 	cylinderDrawable = new osg::ShapeDrawable(cylinder );
 
 	//	A drawable box
-    box = new osg::Box(center,0.7f*radius); 
+	box = new osg::Box(center,0.7f*radius); 
 	boxDrawable = new osg::ShapeDrawable(box);
 
 	//	A drawable sphere
@@ -221,9 +234,13 @@ osg::ref_ptr<osg::Node> SonarBeamGL::CreateSimpleScene()
 void SonarBeamGL::getBeam(base::samples::SonarBeam& Beam)
 {
 //   std::cout << SonarLookto.x() << SonarLookto.y() << SonarLookto.z() << std::endl; //Cout Lookto
+//   osg::Matrixd camrotate;
+//   camrotate.makeRotate();
+  
   osgCam->setViewMatrixAsLookAt(SonarCenter, SonarLookto, osg::Vec3(0,1,0) );
   sonar_beam_out = &Beam;
   viewer.frame();
+  
   
   //For test purposes:
   

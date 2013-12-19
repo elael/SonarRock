@@ -14,6 +14,7 @@
 #include <osg/CullSettings>
 #include <osg/PositionAttitudeTransform>
 #include <osgDB/WriteFile>
+#include <osg/Matrixd>
 #include <math.h>
 #include "Config.hpp"
 #include "base/samples/sonar_beam.h"
@@ -83,6 +84,8 @@ public:
   void Configure(const Config& config);
   void getBeam(base::samples::SonarBeam &Beam);
   void setDataSender(void (*senderFunction)(float));
+  void setBearing(double bearing);
+  void addBearing(double degBearing);
   void Distanceto(osg::Vec3 lookto,base::samples::SonarBeam &Beam){setLookto(lookto);return getBeam(Beam);};
   void Distancefrom(osg::Vec3 center,base::samples::SonarBeam &Beam){setSonarPosition(center);return getBeam(Beam);};
   void setLookto(osg::Vec3 lookto){SonarLookto=lookto;};

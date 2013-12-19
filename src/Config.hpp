@@ -3,6 +3,7 @@
 #include <math.h>
 
 inline double DegreetoRadian(double degree){return degree*M_PIl/180;}
+inline double RadiantoDegree(double radians){return radians*180/M_PIl;}
 
 namespace sonar_simple
 {
